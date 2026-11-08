@@ -347,3 +347,36 @@ tbody tr:nth-child(even) { background: rgba(233, 225, 207, 0.35); }
   .doc-index { columns: 1; }
   .header-inner { padding: 14px 16px; }
 }
+
+/* ---------- mobile nav compaction (2026-11-08) ----------
+   On phones the sidebar stacks on top as a compact header:
+   brand, then every nav link as a wrapped chip — no full-height
+   menu wall before the content. */
+@media (max-width: 860px) {
+  .layout { flex-direction: column; }
+  .sidebar {
+    position: static; width: 100%; max-width: none; flex: none;
+    height: auto; max-height: none; overflow: visible;
+    padding: 16px 0 8px;
+  }
+  .brand { padding: 0 18px 10px; }
+  .sidebar nav { padding: 6px 12px 2px; }
+  .sidebar ul, .sidebar nav ul, .sidebar .nav {
+    display: flex; flex-wrap: wrap; gap: 5px; align-items: center;
+    columns: auto; list-style: none;
+  }
+  .sidebar li { margin: 0; }
+  .sidebar .nav-section, .sidebar li.nav-section {
+    flex: 0 0 100%; padding: 8px 2px 2px; margin: 0;
+  }
+  .sidebar a, .sidebar nav a, .sidebar .nav a {
+    display: inline-block; padding: 5px 11px;
+    border-left: none; border-radius: 999px;
+    background: rgba(127, 127, 127, .18);
+    font-size: 13.5px; line-height: 1.35;
+  }
+  .side-foot, .side-support { padding: 8px 18px 2px; font-size: 12.5px; }
+  .main { margin-left: 0; }
+  .content { padding: 22px 18px 30px; }
+  img { max-width: 100%; height: auto; }
+}
