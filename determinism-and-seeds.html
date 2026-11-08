@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Determinism and Seeds - WaveDirector Pro Documentation - ByteLura</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="wordmark">WaveDirector <span class="accent">Pro</span></div>
+    <div class="header-meta">Documentation &middot; ByteLura</div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="sidebar" aria-label="Documentation">
+    <h2 class="nav-title">Documentation</h2>
+    <ul class="nav-list">
+<li><a href="index.html">Home</a></li>
+<li><a href="quick-start.html">Quick Start</a></li>
+<li><a href="installation-and-setup.html">Installation and Setup</a></li>
+<li><a href="authoring-model.html">Authoring Model</a></li>
+<li><a href="difficulty-budgets-and-composition.html">Difficulty Budgets and Composition</a></li>
+<li><a href="pacing-intermissions-and-boss-waves.html">Pacing, Intermissions and Boss Waves</a></li>
+<li><a href="spawn-sinks.html">Spawn Sinks</a></li>
+<li><a href="timeline-editor.html">Timeline Editor</a></li>
+<li><a href="determinism-and-seeds.html" class="active" aria-current="page">Determinism and Seeds</a></li>
+<li><a href="sample-guide-first-night.html">Sample Guide: First Night</a></li>
+<li><a href="api-summary.html">API Summary</a></li>
+<li><a href="honest-limits.html">Honest Limits</a></li>
+<li><a href="troubleshooting-and-support.html">Troubleshooting and Support</a></li>
+    </ul>
+    <div class="side-support">
+      <span class="side-support-label">Support</span>
+      <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+    </div>
+  </nav>
+  <main class="content">
+    <h1>Determinism and Seeds</h1>
+<p class="source-note">Expanded from the shipped Documentation~/ApiReference.md.</p>
+<h2>The promise, stated exactly</h2>
+<p>Same wave set + same seed + same wave index = the same spawn queue — same archetypes, same order — on every machine and every run. That is the whole promise, and it is why a balance complaint can be reproduced exactly: send the set and the seed, and the cast that frustrated a player is the cast you get.</p>
+<h2>How it is kept</h2>
+<ul>
+<li>The engine uses its <strong>own seeded random generator</strong>; it never calls Unity's global random. Engine time is injected by the driver through <code>Tick(deltaTime)</code>; nothing inside the engine reads a global clock.</li>
+<li><strong>Per-wave stream isolation:</strong> each wave's composition draws from a stream derived from (seed, wave index). Editing, adding, or reordering <em>later</em> waves never changes an earlier wave's composition. (Reordering the waves themselves changes which definition sits at an index — that is authoring, and it is supposed to.)</li>
+<li>Spawn-point choice uses the same seeded discipline, so identical runs pick identical points.</li>
+<li>Previews cannot disagree with runs: <code>PreviewComposition(index, seed)</code> — and the timeline's <em>Simulate All</em> — compose through the same code path the engine runs.</li>
+</ul>
+<h2>Seed posture</h2>
+<p>A new wave set carries an <strong>explicit seed</strong> on the set, and that is the default. Per-run randomization is an opt-in toggle on the director (<code>RandomizeSeedOnStart</code>), off by default: determinism is the reproducibility promise, variety is a choice you switch on knowingly.</p>
+<h2>Working with seeds</h2>
+<ul>
+<li>Found a wave that felt wrong? Note the seed from the set, reproduce the exact cast, then fix the number that caused it — a cost, a weight, a budget.</li>
+<li>Want a fresh run for a stream or a test build? Change the set's seed in the timeline toolbar and every wave re-casts, still reproducibly.</li>
+<li>In Loop and Endless modes, difficulty follows the <strong>absolute</strong> wave index, so a repeated definition at index 9 casts with index 9's budget and index 9's stream — the preview and the engine agree on this exactly.</li>
+</ul>
+  </main>
+</div>
+<footer class="site-footer">
+  WaveDirector Pro documentation &middot; ByteLura &middot; Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+</footer>
+</body>
+</html>

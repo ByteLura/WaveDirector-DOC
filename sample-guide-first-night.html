@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sample Guide: First Night - WaveDirector Pro Documentation - ByteLura</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="wordmark">WaveDirector <span class="accent">Pro</span></div>
+    <div class="header-meta">Documentation &middot; ByteLura</div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="sidebar" aria-label="Documentation">
+    <h2 class="nav-title">Documentation</h2>
+    <ul class="nav-list">
+<li><a href="index.html">Home</a></li>
+<li><a href="quick-start.html">Quick Start</a></li>
+<li><a href="installation-and-setup.html">Installation and Setup</a></li>
+<li><a href="authoring-model.html">Authoring Model</a></li>
+<li><a href="difficulty-budgets-and-composition.html">Difficulty Budgets and Composition</a></li>
+<li><a href="pacing-intermissions-and-boss-waves.html">Pacing, Intermissions and Boss Waves</a></li>
+<li><a href="spawn-sinks.html">Spawn Sinks</a></li>
+<li><a href="timeline-editor.html">Timeline Editor</a></li>
+<li><a href="determinism-and-seeds.html">Determinism and Seeds</a></li>
+<li><a href="sample-guide-first-night.html" class="active" aria-current="page">Sample Guide: First Night</a></li>
+<li><a href="api-summary.html">API Summary</a></li>
+<li><a href="honest-limits.html">Honest Limits</a></li>
+<li><a href="troubleshooting-and-support.html">Troubleshooting and Support</a></li>
+    </ul>
+    <div class="side-support">
+      <span class="side-support-label">Support</span>
+      <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+    </div>
+  </nav>
+  <main class="content">
+    <h1>Sample Guide: First Night</h1>
+<p class="source-note">Expanded from the shipped sample README (Samples~/Demo/README.md).</p>
+<h2>What the sample is</h2>
+<p>First Night is the bundled demo: a three-wave night on a ground plaza. Marchers stream from four spawn points toward a core; the core's pulse downs the oldest marcher every 2.5 seconds; arrivals cost the core health. The HUD (plain uGUI Text, no extra package needed) shows the wave, how many are alive, how many are still to cast, and the core's health. If the core stands when the last wave clears, the night holds.</p>
+<p>Open it with <em>Open the First Night Demo</em> in the home window — the action imports the sample if needed and opens the scene; if the generated scene content is ever missing, the action rebuilds it with the shipped sample builder and says so in the status line.</p>
+<h2>The three waves</h2>
+<ol>
+<li><strong>Wave 1 — First Contact.</strong> Casts to a budget of 120.</li>
+<li><strong>Wave 2 — The Push.</strong> Casts to 220, with faster runners mixed in.</li>
+<li><strong>Wave 3 — Boss Night.</strong> The boss goes first, escorts fill after — the boss-wave rule from <a href="pacing-intermissions-and-boss-waves.html">page 06</a>, visible in play. The wave does not complete while the boss is alive.</li>
+</ol>
+<p>The roster is Grunt and Runner; the Boss archetype is referenced by wave 3 only. Every balance number lives in the generated <code>FirstNightWaves</code> wave set asset — open it and the whole night is numbers you can change.</p>
+<h2>The one-minute lesson</h2>
+<p>Stop. Open <strong>Tools/ByteLura/WaveDirector Pro/Wave Timeline</strong>, select <code>FirstNightWaves</code>, and raise wave 2's budget. Press Play again. A visibly larger, differently-cast wave 2 arrives — because composition, not a spawn list, drives the run. That single edit is the whole product.</p>
+<h2>How it is put together</h2>
+<ul>
+<li>The scene's <code>WaveDirector</code> object carries the director; <code>Spawn Points</code> carries the four points; the Core, referee, and HUD are sample-only scripts.</li>
+<li>Sample scripts use <strong>only the public API</strong> and live in their own assembly, referencing the Runtime only — the sample is also a worked example of integrating the director from outside.</li>
+<li>The marcher script is deliberately minimal demo content — it walks and arrives. It is not an enemy system. Your game replaces it with real enemies; the director does not care, because "cleared" means destroyed or deactivated, which is what spawning and killing already do.</li>
+</ul>
+<h2>Rebuilding the demo content</h2>
+<p>The scene, prefabs, and wave set are generated assets, built by the sample's scene builder inside Unity. If they are ever missing, run <strong>Tools/ByteLura/WaveDirector Pro/Build First Night Demo</strong> — it rebuilds them in place.</p>
+  </main>
+</div>
+<footer class="site-footer">
+  WaveDirector Pro documentation &middot; ByteLura &middot; Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+</footer>
+</body>
+</html>

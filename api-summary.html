@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Summary - WaveDirector Pro Documentation - ByteLura</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="wordmark">WaveDirector <span class="accent">Pro</span></div>
+    <div class="header-meta">Documentation &middot; ByteLura</div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="sidebar" aria-label="Documentation">
+    <h2 class="nav-title">Documentation</h2>
+    <ul class="nav-list">
+<li><a href="index.html">Home</a></li>
+<li><a href="quick-start.html">Quick Start</a></li>
+<li><a href="installation-and-setup.html">Installation and Setup</a></li>
+<li><a href="authoring-model.html">Authoring Model</a></li>
+<li><a href="difficulty-budgets-and-composition.html">Difficulty Budgets and Composition</a></li>
+<li><a href="pacing-intermissions-and-boss-waves.html">Pacing, Intermissions and Boss Waves</a></li>
+<li><a href="spawn-sinks.html">Spawn Sinks</a></li>
+<li><a href="timeline-editor.html">Timeline Editor</a></li>
+<li><a href="determinism-and-seeds.html">Determinism and Seeds</a></li>
+<li><a href="sample-guide-first-night.html">Sample Guide: First Night</a></li>
+<li><a href="api-summary.html" class="active" aria-current="page">API Summary</a></li>
+<li><a href="honest-limits.html">Honest Limits</a></li>
+<li><a href="troubleshooting-and-support.html">Troubleshooting and Support</a></li>
+    </ul>
+    <div class="side-support">
+      <span class="side-support-label">Support</span>
+      <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+    </div>
+  </nav>
+  <main class="content">
+    <h1>API Summary</h1>
+<p class="source-note">A summary of the shipped Documentation~/ApiReference.md; that page is the full reference. Namespace: <code>ByteLura.WaveDirector</code>. Everything below is public API; the director's internals are not part of the contract.</p>
+<h2>Authoring data</h2>
+<ul>
+<li><strong>WaveArchetype</strong> (ScriptableObject) — <code>Id</code>, <code>DisplayName</code>, <code>Prefab</code>, <code>ThreatCost</code> (1 or more), <code>MinWave</code> (first eligible wave, from 1), <code>Weight</code>, <code>PrewarmCount</code>.</li>
+<li><strong>WaveDefinition</strong> — <code>Kind</code> (Standard/Boss), <code>Mode</code> (Budget/Explicit), <code>Budget</code>, <code>BudgetOverride</code> (above 0 wins over the curve, unscaled), <code>Entries</code> + <code>ShuffleExplicit</code>, <code>BossArchetype</code>, <code>SpawnInterval</code>, <code>MaxAlive</code> (0 = no cap), <code>MaxSpawns</code> (budget mode only; Explicit is authored exactly), <code>IntermissionAfter</code> (below 0 = set default), <code>TimelineSeconds</code> (block width only).</li>
+<li><strong>DifficultySettings</strong> — <code>Mode</code> (Flat/Linear/Exponential), <code>BaseMultiplier</code>, <code>GrowthPerWave</code>, <code>IntervalScalePerWave</code>. Budgets scale as <code>floor(base × multiplier)</code>; intervals compress toward a 0.05 s floor.</li>
+<li><strong>WaveSet</strong> (ScriptableObject) — <code>Archetypes</code>, <code>Waves</code>, <code>Difficulty</code>, <code>DefaultIntermission</code>, <code>Seed</code>, <code>RandomizeSeedOnStart</code>, <code>AfterLastWave</code> (Stop/Loop/Endless). <code>DefinitionForWave(index)</code> and <code>EffectiveBudget(index)</code> answer for any absolute index. Code indices are 0-based.</li>
+</ul>
+<h2>Composition</h2>
+<p><code>WaveComposer.Compose(set, waveIndex, seed)</code> returns a <code>CompositionResult</code>: <code>Queue</code> (spawn order; boss first on boss waves), <code>TotalCost</code>, <code>UnspentBudget</code>, and flags <code>HitSpawnCap</code>, <code>BossClamped</code>, <code>NoAffordableArchetype</code>. Deterministic, with per-wave streams — <a href="determinism-and-seeds.html">page 09</a>.</p>
+<h2>The engine</h2>
+<p><code>WaveEngine(set, sink, points)</code> is a plain C# class — no scene required. Drive it with <code>Tick(deltaTime)</code>.</p>
+<ul>
+<li>Controls: <code>StartRun(seed)</code>, <code>Pause()</code>, <code>Resume()</code>, <code>Stop()</code> (despawns the field), <code>SkipToWave(index)</code>.</li>
+<li>State: <code>State</code> (Idle/Intermission/Spawning/Completed), <code>IsPaused</code>, <code>CurrentWaveIndex</code>, <code>AliveCount</code>, <code>QueueRemaining</code>, <code>TotalSpawned</code>.</li>
+<li>Events: <code>WaveStarted</code>, <code>WaveCompleted</code>, <code>IntermissionStarted</code>, <code>AllWavesCompleted</code>, <code>EnemySpawned(archetype, handle)</code>, <code>WarningRaised</code> (plain-language, designer-facing).</li>
+<li><code>PreviewComposition(index, seed)</code> composes without running, through the same code path the engine uses.</li>
+</ul>
+<h2>Spawning</h2>
+<p>The full sink contract, the alive rule, and the three shipped paths are <a href="spawn-sinks.html">page 07</a>. Per-director choice: <code>WaveDirectorBehaviour.SinkMode</code> — Auto (registered sink, then pooled bridge, then fallback), Pooled, or Instantiate. On start, a prewarm-capable sink receives each archetype's <code>PrewarmCount</code> once, before the first spawn.</p>
+<h2>Spawn points</h2>
+<p><code>SpawnPointGroup</code> collects points deterministically — an explicit list, or child transforms in hierarchy order — with group defaults for <code>Weight</code> (0 or below disables a point), <code>CooldownSeconds</code>, and per-point <code>MaxAlive</code>. A director with no usable points anywhere spawns at its own transform (one implicit point).</p>
+<h2>The scene driver</h2>
+<p><code>WaveDirectorBehaviour</code> — assign <code>Set</code>, choose the sink <code>Mode</code>, <code>StartOnPlay</code>. Transport: <code>StartWaves()</code>, <code>PauseWaves()</code>, <code>ResumeWaves()</code>, <code>StopWaves()</code>, <code>SkipToWave(index)</code>. Display: <code>CurrentWave</code> (1-based), <code>AliveCount</code>, <code>QueueRemaining</code>, <code>State</code>, <code>IsRunning</code>, and the <code>Engine</code> itself. Engine events are mirrored as C# events and as UnityEvents (<code>OnWaveStarted</code>, <code>OnWaveCompleted</code>, <code>OnAllWavesCompleted</code>) for inspector wiring. Its custom inspector shows transport buttons and live stats in Play Mode.</p>
+<h2>Networking hooks (hooks only — no transport ships)</h2>
+<ul>
+<li><code>WaveEngine.HasSpawnAuthority</code> — when false, the engine never asks its sink to spawn; non-authority replicas are driven by snapshots.</li>
+<li><code>CaptureSnapshot()</code> / <code>ApplySnapshot(snapshot)</code> — a <code>WaveSnapshot</code> carries wave index, state, state elapsed time, seed, and total spawned. Because composition is deterministic, applying a snapshot reproduces the authority's exact queue for that wave. A snapshot aligns wave and phase; it does not reconstruct individual already-spawned enemies — apply at wave start when that matters. See <a href="honest-limits.html">page 12</a>.</li>
+</ul>
+  </main>
+</div>
+<footer class="site-footer">
+  WaveDirector Pro documentation &middot; ByteLura &middot; Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+</footer>
+</body>
+</html>

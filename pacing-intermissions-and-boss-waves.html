@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pacing, Intermissions and Boss Waves - WaveDirector Pro Documentation - ByteLura</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="wordmark">WaveDirector <span class="accent">Pro</span></div>
+    <div class="header-meta">Documentation &middot; ByteLura</div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="sidebar" aria-label="Documentation">
+    <h2 class="nav-title">Documentation</h2>
+    <ul class="nav-list">
+<li><a href="index.html">Home</a></li>
+<li><a href="quick-start.html">Quick Start</a></li>
+<li><a href="installation-and-setup.html">Installation and Setup</a></li>
+<li><a href="authoring-model.html">Authoring Model</a></li>
+<li><a href="difficulty-budgets-and-composition.html">Difficulty Budgets and Composition</a></li>
+<li><a href="pacing-intermissions-and-boss-waves.html" class="active" aria-current="page">Pacing, Intermissions and Boss Waves</a></li>
+<li><a href="spawn-sinks.html">Spawn Sinks</a></li>
+<li><a href="timeline-editor.html">Timeline Editor</a></li>
+<li><a href="determinism-and-seeds.html">Determinism and Seeds</a></li>
+<li><a href="sample-guide-first-night.html">Sample Guide: First Night</a></li>
+<li><a href="api-summary.html">API Summary</a></li>
+<li><a href="honest-limits.html">Honest Limits</a></li>
+<li><a href="troubleshooting-and-support.html">Troubleshooting and Support</a></li>
+    </ul>
+    <div class="side-support">
+      <span class="side-support-label">Support</span>
+      <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+    </div>
+  </nav>
+  <main class="content">
+    <h1>Pacing, Intermissions, and Boss Waves</h1>
+<p class="source-note">Expanded from the shipped Documentation~/ApiReference.md.</p>
+<h2>Pacing inside a wave</h2>
+<p>The engine drains the composed queue at the wave's spawn interval (after difficulty compression — <a href="difficulty-budgets-and-composition.html">page 05</a>), one spawn per interval, and respects:</p>
+<ul>
+<li><strong>Alive cap</strong> (<code>MaxAlive</code> on the definition): spawning pauses while the cap is reached and resumes the moment something clears. An enemy counts as cleared when its instance is destroyed <strong>or deactivated</strong> — the pattern both plain games (kill deactivates or destroys) and pooling games (despawn deactivates) already use, so no death callback is needed.</li>
+<li><strong>Spawn-point rules</strong>: each point has a weight (0 or below disables it), a cooldown it rests for after each spawn, and its own alive cap. The engine chooses among eligible points with a seeded weighted choice, so identical runs pick identical points.</li>
+<li><strong>A wave completes only when its queue is empty AND nothing it spawned is alive.</strong> An empty queue with one survivor standing is not a cleared wave.</li>
+</ul>
+<p>If a spawner refuses a spawn (for example, a pool at its cap), the engine waits an interval and retries; the spawn is never dropped.</p>
+<figure class="doc-shot">
+  <img src="images/game-wave2.jpg" alt="The sample scene in Play Mode during Wave 2 of 3, with the on-screen readout showing three enemies alive and nineteen still to cast">
+  <figcaption>Wave 2 of the sample run in progress, paced by its spawn interval and alive cap.</figcaption>
+</figure>
+<h2>Transport</h2>
+<p>The director's controls: Start, Pause (freezes spawn timing mid-wave), Resume, Stop (despawns the whole field and returns to Idle), and SkipToWave (despawns the current field and starts the target wave with its own stream — skipping does not fire the skipped wave's completion).</p>
+<h2>Intermissions</h2>
+<p>Between waves the engine rests for the intermission: the set's <code>DefaultIntermission</code>, or the finishing wave's <code>IntermissionAfter</code> override when one is set. Intermission is a real engine state with its own event (<code>IntermissionStarted</code>), so your game can run shop phases, build phases, or breathers off the same hook.</p>
+<h2>After the last wave</h2>
+<p><code>AfterLastWave</code> on the wave set chooses:</p>
+<ul>
+<li><strong>Stop</strong> — the run completes (<code>AllWavesCompleted</code>).</li>
+<li><strong>Loop</strong> — the definitions repeat; difficulty follows the absolute wave index, so wave 9 uses wave 9's scaled budget against the repeated definitions.</li>
+<li><strong>Endless</strong> — the final definition repeats, scaled by the absolute index, for as long as the run lasts.</li>
+</ul>
+<h2>Boss waves</h2>
+<p>A boss wave works differently by design:</p>
+<ol>
+<li>The boss is placed <strong>first</strong> in the queue — always.</li>
+<li>The remaining budget fills with escorts, composed like a budget wave.</li>
+<li>If the boss costs more than the wave's budget, <strong>the boss still spawns</strong>: it goes out alone, escort fill is skipped, the result is flagged (<code>BossClamped</code>), the reported total cost is the true over-budget figure, and the clamp is surfaced through the engine's warning event. The editor validator warns about the same condition at authoring time, before you ever press Play.</li>
+</ol>
+<p>A boss is never silently dropped, and a budget overrun is never silently hidden.</p>
+  </main>
+</div>
+<footer class="site-footer">
+  WaveDirector Pro documentation &middot; ByteLura &middot; Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+</footer>
+</body>
+</html>

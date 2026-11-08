@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Installation and Setup - WaveDirector Pro Documentation - ByteLura</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="wordmark">WaveDirector <span class="accent">Pro</span></div>
+    <div class="header-meta">Documentation &middot; ByteLura</div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="sidebar" aria-label="Documentation">
+    <h2 class="nav-title">Documentation</h2>
+    <ul class="nav-list">
+<li><a href="index.html">Home</a></li>
+<li><a href="quick-start.html">Quick Start</a></li>
+<li><a href="installation-and-setup.html" class="active" aria-current="page">Installation and Setup</a></li>
+<li><a href="authoring-model.html">Authoring Model</a></li>
+<li><a href="difficulty-budgets-and-composition.html">Difficulty Budgets and Composition</a></li>
+<li><a href="pacing-intermissions-and-boss-waves.html">Pacing, Intermissions and Boss Waves</a></li>
+<li><a href="spawn-sinks.html">Spawn Sinks</a></li>
+<li><a href="timeline-editor.html">Timeline Editor</a></li>
+<li><a href="determinism-and-seeds.html">Determinism and Seeds</a></li>
+<li><a href="sample-guide-first-night.html">Sample Guide: First Night</a></li>
+<li><a href="api-summary.html">API Summary</a></li>
+<li><a href="honest-limits.html">Honest Limits</a></li>
+<li><a href="troubleshooting-and-support.html">Troubleshooting and Support</a></li>
+    </ul>
+    <div class="side-support">
+      <span class="side-support-label">Support</span>
+      <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+    </div>
+  </nav>
+  <main class="content">
+    <h1>Installation and Setup</h1>
+<p class="source-note">Expanded from the shipped Quick Start and the product specification.</p>
+<h2>Requirements and compatibility</h2>
+<ul>
+<li>Unity 2022.3 LTS and Unity 6 are the product's targets.</li>
+<li>The package declares <strong>no package dependencies</strong> and works fully standalone.</li>
+<li>Importing the package adds nothing to your scene. Waves need a wave set and a director, and both are one action away in the home window.</li>
+<li>The runtime contains no editor code: a player build contains the director runtime and nothing else. The home window, the timeline, and the setup actions are editor-only.</li>
+</ul>
+<h2>The home window</h2>
+<p>Open <strong>Tools/ByteLura/WaveDirector Pro</strong>. From top to bottom it shows:</p>
+<ol>
+<li><strong>Welcome block</strong> (expanded on first open, collapsible after; a "Show welcome on open" toggle persists your choice): product name, outcome line, version line, and the quick actions <em>Open the First Night Demo</em> / <em>Verify Install</em> / <em>Documentation</em> / <em>Support</em>.</li>
+<li><strong>Director status</strong>: the scene's director if one exists — set name, spawning mode, and in Play Mode the live state, current wave, alive count, and queue remaining. If none exists, the <em>Add Wave Director to Scene</em> action appears here.</li>
+<li><strong>Wave set</strong>: an object field for a wave set, its summary (waves, total effective budget, total timeline length, seed), a validation strip when the validator reports anything, and <em>Open in Wave Timeline</em>.</li>
+<li><strong>Spawning</strong>: one status line in plain language naming which spawning path is active (see <a href="spawn-sinks.html">page 07</a>), with a documentation link explaining the three paths.</li>
+<li><strong>Footer</strong>: version plus the last <em>Verify Install</em> result in plain language.</li>
+</ol>
+<p>With no wave set in the project, the window shows one explanatory line and two actions — <em>Create a Wave Set</em> and <em>Open the First Night Demo</em> — instead of an empty surface.</p>
+<h2>Verify Install</h2>
+<p><em>Verify Install</em> confirms the package assemblies loaded, then runs a headless self-test composition against a throwaway in-memory wave set. It exercises the composer, the engine, and the standalone fallback path without touching your scene, and reports one plain-language line per check in the window footer.</p>
+<figure class="doc-shot">
+  <img src="images/window-verify.jpg" alt="The WaveDirector Pro home window after running Verify Install, with the check results listed at the bottom of the window, ending with everything checks out">
+  <figcaption>Verify Install results in the home window: assemblies loaded, composer self-test passed, package found.</figcaption>
+</figure>
+<h2>Add Wave Director to Scene</h2>
+<p>This action creates the rig: one <code>WaveDirector</code> object carrying the director behaviour, and one <code>Spawn Points</code> group holding four points in a loose ring (radius 12) — placeholder placement that you drag into your level. The action is idempotent: running it again when a rig already exists adds nothing. Both setup actions are safe to re-run at any time.</p>
+<h2>Reset and removal</h2>
+<p><em>Stop</em> on the director despawns the field and returns the engine to Idle. The package keeps no persistent project state beyond your own wave set assets, so there is nothing else to reset; deleting the rig is an ordinary scene delete, and removing the package removes nothing of yours.</p>
+  </main>
+</div>
+<footer class="site-footer">
+  WaveDirector Pro documentation &middot; ByteLura &middot; Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+</footer>
+</body>
+</html>

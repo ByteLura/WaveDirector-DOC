@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spawn Sinks - WaveDirector Pro Documentation - ByteLura</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="wordmark">WaveDirector <span class="accent">Pro</span></div>
+    <div class="header-meta">Documentation &middot; ByteLura</div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="sidebar" aria-label="Documentation">
+    <h2 class="nav-title">Documentation</h2>
+    <ul class="nav-list">
+<li><a href="index.html">Home</a></li>
+<li><a href="quick-start.html">Quick Start</a></li>
+<li><a href="installation-and-setup.html">Installation and Setup</a></li>
+<li><a href="authoring-model.html">Authoring Model</a></li>
+<li><a href="difficulty-budgets-and-composition.html">Difficulty Budgets and Composition</a></li>
+<li><a href="pacing-intermissions-and-boss-waves.html">Pacing, Intermissions and Boss Waves</a></li>
+<li><a href="spawn-sinks.html" class="active" aria-current="page">Spawn Sinks</a></li>
+<li><a href="timeline-editor.html">Timeline Editor</a></li>
+<li><a href="determinism-and-seeds.html">Determinism and Seeds</a></li>
+<li><a href="sample-guide-first-night.html">Sample Guide: First Night</a></li>
+<li><a href="api-summary.html">API Summary</a></li>
+<li><a href="honest-limits.html">Honest Limits</a></li>
+<li><a href="troubleshooting-and-support.html">Troubleshooting and Support</a></li>
+    </ul>
+    <div class="side-support">
+      <span class="side-support-label">Support</span>
+      <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+    </div>
+  </nav>
+  <main class="content">
+    <h1>Spawn Sinks: Standalone First, Pooled Bridge Optional</h1>
+<p class="source-note">Expanded from the shipped Documentation~/ApiReference.md. Read the first section carefully: it states plainly what is in the box and what is not.</p>
+<h2>The plain statement</h2>
+<p>WaveDirector Pro works <strong>fully standalone, out of the box</strong>. Its built-in spawner needs nothing else installed, and that standalone path is the default truth of the product.</p>
+<p>Pooling is an <strong>optional bridge</strong>: if you <em>also</em> own and install SpawnPool Pro — a separate product, <strong>not included</strong> with WaveDirector Pro — the director uses its pooling automatically. Nothing about the standalone path is a reduced version waiting for that bridge; it is a complete spawning path in its own right.</p>
+<h2>The one interface</h2>
+<p>The engine spawns only through <code>ISpawnSink</code>:</p>
+<pre><code>public interface ISpawnSink
+{
+    bool TrySpawn(in WaveSpawnRequest request, out WaveSpawnHandle handle);
+    bool IsAlive(WaveSpawnHandle handle);
+    void DespawnAll();
+}</code></pre>
+<p><strong>Alive contract:</strong> an enemy counts as cleared when its instance is destroyed <strong>or deactivated</strong>. Pooled despawns deactivate; kills deactivate or destroy — both already satisfy the contract, so no death callback is needed. (A destroyed instance reads as not-alive once destruction takes effect — immediately for <code>DestroyImmediate</code>, at frame end for <code>Destroy</code>.)</p>
+<p>Returning <code>false</code> from <code>TrySpawn</code> (for example, a pool at its cap) makes the engine wait an interval and retry; the spawn is never dropped.</p>
+<h2>The three shipped paths</h2>
+<ol>
+<li><strong>InstantiateSpawnSink — the standalone fallback.</strong> Plain Instantiate; despawn by destroy. This is what runs when nothing else is installed and nothing is registered.</li>
+<li><strong>PooledSpawnBridge — the optional bridge.</strong> Used automatically when SpawnPool Pro is installed. It binds that product's public <code>PoolManager</code> by type name at runtime; there is <strong>no compile-time reference in either direction</strong>, so each package installs and removes cleanly without the other, and neither package's installation, compilation, or removal can break the other. The cost is one reflection call per spawn, at wave cadence (a few calls per second, never per frame). The bridge also forwards each archetype's <code>PrewarmCount</code> to the pool on start.</li>
+<li><strong>Your own sink, registered.</strong> Call <code>WaveSinkRegistry.Register(sink)</code> once and every Auto director uses it: your own pooling, your network wrapper, anything that implements the interface. Unregistering restores the default selection.</li>
+</ol>
+<h2>Choosing per director</h2>
+<p><code>WaveDirectorBehaviour.SinkMode</code> chooses per director:</p>
+<ul>
+<li><strong>Auto</strong> — a registered custom sink wins; otherwise the pooled bridge when the separate pooling product is installed; otherwise the standalone fallback.</li>
+<li><strong>Pooled</strong> — the bridge path.</li>
+<li><strong>Instantiate</strong> — the standalone fallback, forced.</li>
+</ul>
+<p>The home window's Spawning line always states, in plain language, which of the three paths is active in your project.</p>
+  </main>
+</div>
+<footer class="site-footer">
+  WaveDirector Pro documentation &middot; ByteLura &middot; Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+</footer>
+</body>
+</html>

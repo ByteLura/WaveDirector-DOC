@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Difficulty Budgets and Composition - WaveDirector Pro Documentation - ByteLura</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="wordmark">WaveDirector <span class="accent">Pro</span></div>
+    <div class="header-meta">Documentation &middot; ByteLura</div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="sidebar" aria-label="Documentation">
+    <h2 class="nav-title">Documentation</h2>
+    <ul class="nav-list">
+<li><a href="index.html">Home</a></li>
+<li><a href="quick-start.html">Quick Start</a></li>
+<li><a href="installation-and-setup.html">Installation and Setup</a></li>
+<li><a href="authoring-model.html">Authoring Model</a></li>
+<li><a href="difficulty-budgets-and-composition.html" class="active" aria-current="page">Difficulty Budgets and Composition</a></li>
+<li><a href="pacing-intermissions-and-boss-waves.html">Pacing, Intermissions and Boss Waves</a></li>
+<li><a href="spawn-sinks.html">Spawn Sinks</a></li>
+<li><a href="timeline-editor.html">Timeline Editor</a></li>
+<li><a href="determinism-and-seeds.html">Determinism and Seeds</a></li>
+<li><a href="sample-guide-first-night.html">Sample Guide: First Night</a></li>
+<li><a href="api-summary.html">API Summary</a></li>
+<li><a href="honest-limits.html">Honest Limits</a></li>
+<li><a href="troubleshooting-and-support.html">Troubleshooting and Support</a></li>
+    </ul>
+    <div class="side-support">
+      <span class="side-support-label">Support</span>
+      <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+    </div>
+  </nav>
+  <main class="content">
+    <h1>Difficulty Budgets and Composition</h1>
+<p class="source-note">Expanded from the shipped Documentation~/ApiReference.md.</p>
+<h2>The budget idea</h2>
+<p>Hand-built wave lists encode difficulty by accident: wave 7 is hard because the list someone typed happens to be long. In WaveDirector Pro you set what a wave <strong>may cost</strong>, and the composer casts the wave to fit. Difficulty becomes a decision you make once, as numbers, instead of a side effect of list length.</p>
+<h2>DifficultySettings</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Field</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><code>Mode</code></td><td>Flat, Linear, or Exponential</td></tr>
+<tr><td><code>BaseMultiplier</code></td><td>Multiplier applied to every wave's base budget</td></tr>
+<tr><td><code>GrowthPerWave</code></td><td>Per-wave growth for Linear and Exponential modes</td></tr>
+<tr><td><code>IntervalScalePerWave</code></td><td>Per-wave spawn-interval compression</td></tr>
+</tbody></table></div>
+<p>Budgets scale as <code>floor(base × multiplier)</code>, in integer-exact math. Spawn intervals compress per wave toward a floor of 0.05 seconds — pacing can get fierce, never broken. A wave's <code>BudgetOverride</code> (above 0) replaces the scaled budget entirely and is used unscaled: an authored hard number beats the curve, on purpose, for the waves you want pinned (a tuned boss night, a deliberate breather).</p>
+<h2>How the composer casts (Budget mode)</h2>
+<p>Composition is a pure, deterministic pass: given a set, a definition, a wave index, and a seed, it produces the spawn queue.</p>
+<ol>
+<li>Work out the wave's effective budget (scaled, or the override).</li>
+<li>Repeatedly pick, by seeded weighted choice, among archetypes that are <strong>eligible</strong> (their <code>MinWave</code> has been reached) and <strong>affordable</strong> (their cost fits the remaining budget).</li>
+<li>Stop when the remainder buys nothing more, or the wave's <code>MaxSpawns</code> cap hits.</li>
+</ol>
+<p>The result reports the queue, the total cost, the unspent budget, and flags — including whether the spawn cap stopped the cast. Because the unspent remainder is always less than the cheapest affordable eligible archetype (unless the cap stopped it), a budget is genuinely spent, not approximated.</p>
+<h2>Explicit mode</h2>
+<p>When a wave must be exactly what you authored, use Explicit mode: the entry list expands to exactly those counts, and is never truncated by caps. Turn on <code>ShuffleExplicit</code> and the same multiset is dealt in a seed-determined order — variety without losing the authored counts.</p>
+<h2>Empty casts are reported, never silent</h2>
+<p>If no archetype is affordable for a budget — or the roster is empty — the queue comes back empty with a <code>NoAffordableArchetype</code> flag. The engine raises its warning event and completes the wave immediately rather than hanging, and the editor validator flags the same condition while you are authoring (<a href="timeline-editor.html">page 08</a>). A wave that casts nothing is a number problem, and the product tells you which number.</p>
+  </main>
+</div>
+<footer class="site-footer">
+  WaveDirector Pro documentation &middot; ByteLura &middot; Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+</footer>
+</body>
+</html>

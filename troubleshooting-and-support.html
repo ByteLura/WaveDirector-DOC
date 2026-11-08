@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Troubleshooting and Support - WaveDirector Pro Documentation - ByteLura</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="wordmark">WaveDirector <span class="accent">Pro</span></div>
+    <div class="header-meta">Documentation &middot; ByteLura</div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="sidebar" aria-label="Documentation">
+    <h2 class="nav-title">Documentation</h2>
+    <ul class="nav-list">
+<li><a href="index.html">Home</a></li>
+<li><a href="quick-start.html">Quick Start</a></li>
+<li><a href="installation-and-setup.html">Installation and Setup</a></li>
+<li><a href="authoring-model.html">Authoring Model</a></li>
+<li><a href="difficulty-budgets-and-composition.html">Difficulty Budgets and Composition</a></li>
+<li><a href="pacing-intermissions-and-boss-waves.html">Pacing, Intermissions and Boss Waves</a></li>
+<li><a href="spawn-sinks.html">Spawn Sinks</a></li>
+<li><a href="timeline-editor.html">Timeline Editor</a></li>
+<li><a href="determinism-and-seeds.html">Determinism and Seeds</a></li>
+<li><a href="sample-guide-first-night.html">Sample Guide: First Night</a></li>
+<li><a href="api-summary.html">API Summary</a></li>
+<li><a href="honest-limits.html">Honest Limits</a></li>
+<li><a href="troubleshooting-and-support.html" class="active" aria-current="page">Troubleshooting and Support</a></li>
+    </ul>
+    <div class="side-support">
+      <span class="side-support-label">Support</span>
+      <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+    </div>
+  </nav>
+  <main class="content">
+    <h1>Troubleshooting and Support</h1>
+<p>Every entry below names a condition the product itself reports, and the fix its message points to. WaveDirector Pro's warnings are written to state what happened and the one action that fixes it — start from the message, not from a search engine.</p>
+<h2>Authoring-time warnings (timeline validation strip)</h2>
+<ul>
+<li><strong>"Wave N's budget buys nothing — the cheapest archetype costs more."</strong> Raise that wave's budget (or its override), or lower an archetype's threat cost. Until then the wave casts an empty queue and completes immediately at runtime.</li>
+<li><strong>A boss wave with no boss archetype.</strong> Assign a <code>BossArchetype</code> on the boss-kind wave definition.</li>
+<li><strong>An archetype no wave can ever afford.</strong> A roster entry whose cost exceeds every wave's effective budget is never cast. Lower its cost, raise a budget, or remove the entry.</li>
+</ul>
+<h2>Runtime warnings (director log / WarningRaised event)</h2>
+<ul>
+<li><strong>Boss clamped.</strong> The boss cost more than its wave's budget. The boss still spawned — alone, with no escorts — and the reported total is the true over-budget figure. Raise the boss wave's budget if you want the escort fill back.</li>
+<li><strong>No affordable archetype.</strong> The wave's queue was empty, so the wave completed immediately instead of hanging. Same fix as the authoring warning above.</li>
+<li><strong>A spawner refusing spawns.</strong> The engine waits an interval and retries — the spawn is not dropped. If it persists, check the sink: a pool at its cap, or a custom sink returning false.</li>
+</ul>
+<h2>Behaviour that looks wrong but is the contract</h2>
+<ul>
+<li><strong>A wave will not complete.</strong> A wave completes only when its queue is empty AND nothing it spawned is alive. Enemies count as cleared when destroyed <strong>or deactivated</strong>; an enemy that is merely hidden, disabled in logic but still active, or parked alive off-screen still holds the wave.</li>
+<li><strong>Spawning paused mid-wave.</strong> The alive cap (wave-level or per-point) is reached, or the eligible points are resting on cooldown. It resumes on its own as things clear.</li>
+<li><strong>The cast changed after you edited a later wave.</strong> It should not have — per-wave streams isolate earlier waves (<a href="determinism-and-seeds.html">page 09</a>). If you reordered the waves themselves, the definitions moved to new indices, and that is authoring, not drift.</li>
+<li><strong>A fresh rig spawns from one point.</strong> With no spawn-point groups anywhere, the director uses one implicit point at its own transform. Arrange a <code>SpawnPointGroup</code> and it takes over.</li>
+<li><strong>The demo scene content is missing.</strong> Run <em>Open the First Night Demo</em> again — it rebuilds the generated content with the shipped builder and says so in the status line — or run <strong>Tools/ByteLura/WaveDirector Pro/Build First Night Demo</strong>.</li>
+</ul>
+<h2>Setup checks</h2>
+<p>Run <strong>Verify Install</strong> from the home window before anything else: it confirms the assemblies loaded and test-casts a wave in memory, reporting one plain-language line per check. Running <em>Add Wave Director to Scene</em> twice is safe — it never creates a second rig.</p>
+<h2>Support</h2>
+<p>Support: bytelura@gmail.com. When you write, include your Unity version, the wave set and seed involved, and the exact warning text — with a set and a seed, the cast you saw is the cast that can be reproduced.</p>
+  </main>
+</div>
+<footer class="site-footer">
+  WaveDirector Pro documentation &middot; ByteLura &middot; Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+</footer>
+</body>
+</html>

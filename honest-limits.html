@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Honest Limits - WaveDirector Pro Documentation - ByteLura</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="wordmark">WaveDirector <span class="accent">Pro</span></div>
+    <div class="header-meta">Documentation &middot; ByteLura</div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="sidebar" aria-label="Documentation">
+    <h2 class="nav-title">Documentation</h2>
+    <ul class="nav-list">
+<li><a href="index.html">Home</a></li>
+<li><a href="quick-start.html">Quick Start</a></li>
+<li><a href="installation-and-setup.html">Installation and Setup</a></li>
+<li><a href="authoring-model.html">Authoring Model</a></li>
+<li><a href="difficulty-budgets-and-composition.html">Difficulty Budgets and Composition</a></li>
+<li><a href="pacing-intermissions-and-boss-waves.html">Pacing, Intermissions and Boss Waves</a></li>
+<li><a href="spawn-sinks.html">Spawn Sinks</a></li>
+<li><a href="timeline-editor.html">Timeline Editor</a></li>
+<li><a href="determinism-and-seeds.html">Determinism and Seeds</a></li>
+<li><a href="sample-guide-first-night.html">Sample Guide: First Night</a></li>
+<li><a href="api-summary.html">API Summary</a></li>
+<li><a href="honest-limits.html" class="active" aria-current="page">Honest Limits</a></li>
+<li><a href="troubleshooting-and-support.html">Troubleshooting and Support</a></li>
+    </ul>
+    <div class="side-support">
+      <span class="side-support-label">Support</span>
+      <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+    </div>
+  </nav>
+  <main class="content">
+    <h1>Honest Limits: What v1 Is Not</h1>
+<p class="source-note">This page carries the shipped Documentation~/WhatV1IsNot.md in full, in the same words the product uses. The limits are printed so they are a feature of the documentation, not a surprise in a review.</p>
+<ul>
+<li><strong>Not an enemy system.</strong> No enemy movement, health, or damage ships in the runtime, and no enemy behaviour logic of any kind. The director casts and paces; your game plays the enemies. The demo's marcher is sample content, deliberately minimal.</li>
+<li><strong>Not a networking product.</strong> Hooks only: a spawn-authority flag, events, and a wave snapshot your own networking can carry. No transport, no prediction, no lobbies — and snapshot sync aligns wave and phase, it does not reconstruct individual already-spawned enemies.</li>
+<li><strong>Not adaptive.</strong> The director never reads player performance and never changes a budget at runtime. Difficulty is the authored curve, executed exactly — that predictability is the point.</li>
+<li><strong>No enemy stat scaling.</strong> Waves scale budgets and spawn intervals. Buffing enemy health or damage per wave is your game's job, driven by the wave events if you want it.</li>
+<li><strong>No quest or narrative encounters.</strong> Survival, tower-defence, and horde patterns are the v1 genres. Dialogue-triggered or branching encounter systems are out of scope.</li>
+<li><strong>No render-pipeline content.</strong> The runtime is pipeline-agnostic and claims nothing about pipelines; the demo's materials use whichever lit shader your project provides.</li>
+<li><strong>Pooling is a separate product.</strong> The pooled spawning path works through an optional bridge to SpawnPool Pro, which is a separate purchase and is not included in this package. Out of the box, and by default, spawning runs on the built-in standalone spawner — see <a href="spawn-sinks.html">page 07</a>.</li>
+</ul>
+<h2>Design fences worth knowing</h2>
+<ul>
+<li>The package declares no package dependencies, and the pooled bridge holds no compile-time reference in either direction: installing or removing either package cannot break the other.</li>
+<li>The runtime makes no network calls, collects no telemetry, and writes no project data to disk.</li>
+<li>The Runtime assembly holds no editor references; everything under the Tools menu is editor-only and never reaches a player build.</li>
+</ul>
+  </main>
+</div>
+<footer class="site-footer">
+  WaveDirector Pro documentation &middot; ByteLura &middot; Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+</footer>
+</body>
+</html>

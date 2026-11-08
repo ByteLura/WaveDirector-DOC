@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quick Start - WaveDirector Pro Documentation - ByteLura</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="wordmark">WaveDirector <span class="accent">Pro</span></div>
+    <div class="header-meta">Documentation &middot; ByteLura</div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="sidebar" aria-label="Documentation">
+    <h2 class="nav-title">Documentation</h2>
+    <ul class="nav-list">
+<li><a href="index.html">Home</a></li>
+<li><a href="quick-start.html" class="active" aria-current="page">Quick Start</a></li>
+<li><a href="installation-and-setup.html">Installation and Setup</a></li>
+<li><a href="authoring-model.html">Authoring Model</a></li>
+<li><a href="difficulty-budgets-and-composition.html">Difficulty Budgets and Composition</a></li>
+<li><a href="pacing-intermissions-and-boss-waves.html">Pacing, Intermissions and Boss Waves</a></li>
+<li><a href="spawn-sinks.html">Spawn Sinks</a></li>
+<li><a href="timeline-editor.html">Timeline Editor</a></li>
+<li><a href="determinism-and-seeds.html">Determinism and Seeds</a></li>
+<li><a href="sample-guide-first-night.html">Sample Guide: First Night</a></li>
+<li><a href="api-summary.html">API Summary</a></li>
+<li><a href="honest-limits.html">Honest Limits</a></li>
+<li><a href="troubleshooting-and-support.html">Troubleshooting and Support</a></li>
+    </ul>
+    <div class="side-support">
+      <span class="side-support-label">Support</span>
+      <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+    </div>
+  </nav>
+  <main class="content">
+    <h1>Quick Start</h1>
+<p class="source-note">Expanded from the shipped Documentation~/QuickStart.md.</p>
+<p>From import to a directed wave, following only the product's own surfaces.</p>
+<h2>1. Open the home window</h2>
+<p><strong>Tools/ByteLura/WaveDirector Pro.</strong> On first open, the welcome block shows the product name, the outcome line, the version line, and four quick actions: <em>Open the First Night Demo</em>, <em>Verify Install</em>, <em>Documentation</em>, and <em>Support</em>. Run <strong>Verify Install</strong> first — it checks the package and test-casts a wave in memory, without touching your scene.</p>
+<h2>2. Run the demo</h2>
+<p>Click <strong>Open the First Night Demo</strong> — it imports the sample if needed and opens the demo scene — then press Play. Marchers stream toward the core; the HUD reads the wave, the alive count, and how many are still to cast. Three waves: a budget ramp, a mixed push, then a boss wave. The full sample guide is <a href="sample-guide-first-night.html">page 10</a>.</p>
+<h2>3. Direct something</h2>
+<p>Stop. In the home window, click <strong>Open in Wave Timeline</strong>. Select wave 2, raise its <strong>Budget</strong>, and press Play again. A larger, differently-cast wave 2 arrives. Same seed, same waves — until you change the numbers. That contrast is the product: waves are composed to budgets you set, not lists you typed.</p>
+<h2>4. Put a director in your game</h2>
+<p>In your scene, use <strong>Add Wave Director to Scene</strong> from the home window. It creates a <code>WaveDirector</code> object and a <code>Spawn Points</code> group with four starter points in a loose ring — drag those points into your level.</p>
+<p>Create a wave set (<strong>Create a Wave Set</strong> in the home window), add your enemy prefabs as archetypes (Assets &gt; Create &gt; ByteLura &gt; WaveDirector &gt; Enemy Archetype) with a threat cost each, author two or three waves, and assign the set to the director. The director starts on Play by default.</p>
+<h2>When something looks wrong</h2>
+<p>The timeline shows a warning strip for authoring problems (a budget that buys nothing, a boss wave with no boss). During Play, the director logs plain-language warnings for runtime conditions (a boss that costs more than its wave's budget). Each message names the fix. See <a href="troubleshooting-and-support.html">page 13</a>.</p>
+  </main>
+</div>
+<footer class="site-footer">
+  WaveDirector Pro documentation &middot; ByteLura &middot; Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+</footer>
+</body>
+</html>

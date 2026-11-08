@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Authoring Model - WaveDirector Pro Documentation - ByteLura</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="wordmark">WaveDirector <span class="accent">Pro</span></div>
+    <div class="header-meta">Documentation &middot; ByteLura</div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="sidebar" aria-label="Documentation">
+    <h2 class="nav-title">Documentation</h2>
+    <ul class="nav-list">
+<li><a href="index.html">Home</a></li>
+<li><a href="quick-start.html">Quick Start</a></li>
+<li><a href="installation-and-setup.html">Installation and Setup</a></li>
+<li><a href="authoring-model.html" class="active" aria-current="page">Authoring Model</a></li>
+<li><a href="difficulty-budgets-and-composition.html">Difficulty Budgets and Composition</a></li>
+<li><a href="pacing-intermissions-and-boss-waves.html">Pacing, Intermissions and Boss Waves</a></li>
+<li><a href="spawn-sinks.html">Spawn Sinks</a></li>
+<li><a href="timeline-editor.html">Timeline Editor</a></li>
+<li><a href="determinism-and-seeds.html">Determinism and Seeds</a></li>
+<li><a href="sample-guide-first-night.html">Sample Guide: First Night</a></li>
+<li><a href="api-summary.html">API Summary</a></li>
+<li><a href="honest-limits.html">Honest Limits</a></li>
+<li><a href="troubleshooting-and-support.html">Troubleshooting and Support</a></li>
+    </ul>
+    <div class="side-support">
+      <span class="side-support-label">Support</span>
+      <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+    </div>
+  </nav>
+  <main class="content">
+    <h1>Authoring Model: Archetypes, Definitions, Sets</h1>
+<p class="source-note">Expanded from the shipped Documentation~/ApiReference.md.</p>
+<p>Everything you author is a ScriptableObject. No wave data lives in code constants.</p>
+<figure class="doc-shot">
+  <img src="images/editor-timeline.jpg" alt="The Wave Timeline editor showing the FirstNightWaves set as three wave blocks with their budgets, and the first wave's authored fields below">
+  <figcaption>An authored wave set on the timeline: three waves, each with its own budget and settings.</figcaption>
+</figure>
+<h2>WaveArchetype — an enemy kind</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Field</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><code>Id</code></td><td>Stable string id, unique per roster</td></tr>
+<tr><td><code>DisplayName</code></td><td>The name shown in editor surfaces</td></tr>
+<tr><td><code>Prefab</code></td><td>The enemy prefab the spawner creates</td></tr>
+<tr><td><code>ThreatCost</code></td><td>What one of these costs a wave budget (1 or more)</td></tr>
+<tr><td><code>MinWave</code></td><td>The first wave it may appear in, counted from 1</td></tr>
+<tr><td><code>Weight</code></td><td>Its composition weight in budget-mode casting</td></tr>
+<tr><td><code>PrewarmCount</code></td><td>How many a prewarm-capable spawner prepares on start</td></tr>
+</tbody></table></div>
+<p>Create archetypes from Assets &gt; Create &gt; ByteLura &gt; WaveDirector &gt; Enemy Archetype, one per enemy kind, and give each a threat cost that reflects how threatening it actually is — the budget system is only as honest as the costs you set.</p>
+<h2>WaveDefinition — one wave inside a set</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Field</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><code>Kind</code></td><td>Standard or Boss</td></tr>
+<tr><td><code>Mode</code></td><td>Budget (composed) or Explicit (authored list)</td></tr>
+<tr><td><code>Budget</code></td><td>The wave's base budget in budget mode</td></tr>
+<tr><td><code>BudgetOverride</code></td><td>Above 0, this hard number wins over the difficulty curve, unscaled</td></tr>
+<tr><td><code>Entries</code> + <code>ShuffleExplicit</code></td><td>The authored entry list for Explicit mode, optionally shuffled with the wave's seed</td></tr>
+<tr><td><code>BossArchetype</code></td><td>The boss for Boss-kind waves</td></tr>
+<tr><td><code>SpawnInterval</code></td><td>Seconds between spawns (before difficulty compression)</td></tr>
+<tr><td><code>MaxAlive</code></td><td>Alive cap for the wave; 0 means no cap</td></tr>
+<tr><td><code>MaxSpawns</code></td><td>Caps budget-mode casts; Explicit mode is authored exactly and never truncated</td></tr>
+<tr><td><code>IntermissionAfter</code></td><td>Pause after this wave; below 0 means the set default</td></tr>
+<tr><td><code>TimelineSeconds</code></td><td>Timeline block width hint only</td></tr>
+</tbody></table></div>
+<p>Wave indices in code are 0-based; <code>MinWave</code> eligibility counts from 1.</p>
+<h2>WaveSet — the run</h2>
+<p>A wave set holds the roster (<code>Archetypes</code>), the ordered <code>Waves</code>, the <code>Difficulty</code> settings, the <code>DefaultIntermission</code>, the <code>Seed</code>, the <code>RandomizeSeedOnStart</code> opt-in toggle, and <code>AfterLastWave</code> — what happens when the authored waves end: Stop, Loop, or Endless (<a href="pacing-intermissions-and-boss-waves.html">page 06</a>).</p>
+<p>The set answers two questions for any absolute wave index: <code>DefinitionForWave(index)</code> maps the index through the end behaviour, and <code>EffectiveBudget(index)</code> returns the budget that actually casts there — the definition's scaled budget, or its override when one is set.</p>
+<h2>How the pieces fit</h2>
+<p>Roster first (what exists, and what it costs), waves second (how much each wave may spend, and how it is paced), set last (the curve, the seed, and what happens at the end). Page 05 covers how a budget becomes a cast.</p>
+  </main>
+</div>
+<footer class="site-footer">
+  WaveDirector Pro documentation &middot; ByteLura &middot; Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+</footer>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home - WaveDirector Pro Documentation - ByteLura</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="wordmark">WaveDirector <span class="accent">Pro</span></div>
+    <div class="header-meta">Documentation &middot; ByteLura</div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="sidebar" aria-label="Documentation">
+    <h2 class="nav-title">Documentation</h2>
+    <ul class="nav-list">
+<li><a href="index.html" class="active" aria-current="page">Home</a></li>
+<li><a href="quick-start.html">Quick Start</a></li>
+<li><a href="installation-and-setup.html">Installation and Setup</a></li>
+<li><a href="authoring-model.html">Authoring Model</a></li>
+<li><a href="difficulty-budgets-and-composition.html">Difficulty Budgets and Composition</a></li>
+<li><a href="pacing-intermissions-and-boss-waves.html">Pacing, Intermissions and Boss Waves</a></li>
+<li><a href="spawn-sinks.html">Spawn Sinks</a></li>
+<li><a href="timeline-editor.html">Timeline Editor</a></li>
+<li><a href="determinism-and-seeds.html">Determinism and Seeds</a></li>
+<li><a href="sample-guide-first-night.html">Sample Guide: First Night</a></li>
+<li><a href="api-summary.html">API Summary</a></li>
+<li><a href="honest-limits.html">Honest Limits</a></li>
+<li><a href="troubleshooting-and-support.html">Troubleshooting and Support</a></li>
+    </ul>
+    <div class="side-support">
+      <span class="side-support-label">Support</span>
+      <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+    </div>
+  </nav>
+  <main class="content">
+    <h1>WaveDirector Pro</h1>
+<p class="lead">Wave composition, pacing and boss waves for Unity &mdash; directed by budgets, a roster and a timeline, not by hand-typed spawn lists.</p>
+<p>WaveDirector Pro is a wave system for survival, tower-defence, and horde games in Unity. It directs waves instead of only spawning them:</p>
+<ul>
+<li>Each wave is <strong>composed to a threat budget</strong>. You set what a wave may cost; the composer casts it from your archetype roster.</li>
+<li><strong>Difficulty is a curve</strong> over budgets &mdash; flat, linear, or exponential &mdash; instead of hand-counted spawn lists and code constants.</li>
+<li>The whole run is arranged on a <strong>visual timeline</strong>: waves, intermissions, and boss waves as blocks you can see and edit.</li>
+<li>Runs are <strong>deterministic</strong>: the same wave set, the same seed, and the same wave index produce the same spawn queue, on every machine. A balance complaint can be reproduced exactly.</li>
+<li>It <strong>works fully standalone</strong> with a built-in spawner. Pooling through a separate pooling product is an optional bridge &mdash; see <a href="spawn-sinks.html">Spawn Sinks</a>.</li>
+</ul>
+<figure class="doc-hero">
+  <img src="images/hero.jpg" alt="The WaveDirector Pro home window in the Unity Editor, showing the assigned FirstNightWaves wave set with its wave count, total budget, timeline length and seed">
+  <figcaption>The WaveDirector Pro home window: the scene director, its wave set at a glance, and the active spawning path.</figcaption>
+</figure>
+<h2>Who it is for</h2>
+<p>A developer whose waves currently live in hand-typed lists &mdash; &ldquo;wave 7 is 12 of these, 4 of those&rdquo; &mdash; where difficulty is whatever the lists happen to add up to, and every balance change is a code edit followed by a full replay. WaveDirector Pro replaces the lists with budgets, a roster, and a timeline.</p>
+<h2>The five ideas</h2>
+<ul>
+<li><strong>Budget</strong> &mdash; what a wave may cost. The composer casts the roster to fit.</li>
+<li><strong>Archetype</strong> &mdash; an enemy kind: prefab, threat cost, composition weight, and the first wave it may appear in.</li>
+<li><strong>Wave set</strong> &mdash; the roster plus the ordered waves, the difficulty settings, the default intermission, and the seed.</li>
+<li><strong>Timeline</strong> &mdash; the whole run as blocks. Edit numbers there, not in code.</li>
+<li><strong>Seed</strong> &mdash; same set + same seed = the same waves, on every machine.</li>
+</ul>
+<h2>Honest scope</h2>
+<p>The limits are printed so they are a feature of the documentation, not a surprise in a review. In short:</p>
+<ul>
+<li><strong>Not an enemy system.</strong> No enemy movement, health, or damage ships in the runtime, and no enemy behaviour logic of any kind. The director casts and paces; your game plays the enemies.</li>
+<li><strong>Not a networking product.</strong> Hooks only: a spawn-authority flag, events, and a wave snapshot your own networking can carry. No transport, no prediction, no lobbies.</li>
+<li><strong>Not adaptive.</strong> The director never reads player performance and never changes a budget at runtime. Difficulty is the authored curve, executed exactly &mdash; that predictability is the point.</li>
+<li><strong>Pooling is a separate product.</strong> The pooled spawning path works through an optional bridge to SpawnPool Pro, which is not included in this package. Out of the box, and by default, spawning runs on the built-in standalone spawner.</li>
+</ul>
+<p>The full list is on the <a href="honest-limits.html">Honest Limits</a> page, in the same words the product uses.</p>
+<h2>Screenshots</h2>
+<div class="doc-gallery">
+<figure class="doc-shot">
+  <img src="images/editor-timeline.jpg" alt="The Wave Timeline editor showing three wave blocks, First Contact, The Push and the Boss Night boss wave, with the first wave's budget and spawn settings below">
+  <figcaption>The Wave Timeline editor: every wave as a block, with the selected wave's settings underneath.</figcaption>
+</figure>
+<figure class="doc-shot">
+  <img src="images/game-wave1.jpg" alt="The sample scene in Play Mode during Wave 1 of 3, with the on-screen readout showing enemies alive, still to cast, spawned and the core health">
+  <figcaption>The First Night sample in Play Mode: Wave 1 running, with live counts on screen.</figcaption>
+</figure>
+<figure class="doc-shot">
+  <img src="images/window-live.jpg" alt="The WaveDirector Pro home window during Play Mode, reporting the live state as Spawning on Wave 1 with three enemies alive and seven still to cast, beside the Game view">
+  <figcaption>Live director state in the home window while a wave is spawning.</figcaption>
+</figure>
+<figure class="doc-shot">
+  <img src="images/editor-timeline-edited.jpg" alt="The Wave Timeline editor with Wave 2, The Push, selected and edited, and the Simulate All totals line reporting spawn counts and spend per wave">
+  <figcaption>After editing Wave 2 and running Simulate All: per-wave spawn counts and spend in the status line.</figcaption>
+</figure>
+</div>
+<h2>In this documentation</h2>
+<ul class="doc-index">
+<li><a href="quick-start.html">Quick Start</a></li>
+<li><a href="installation-and-setup.html">Installation and Setup</a></li>
+<li><a href="authoring-model.html">Authoring Model</a></li>
+<li><a href="difficulty-budgets-and-composition.html">Difficulty Budgets and Composition</a></li>
+<li><a href="pacing-intermissions-and-boss-waves.html">Pacing, Intermissions and Boss Waves</a></li>
+<li><a href="spawn-sinks.html">Spawn Sinks</a></li>
+<li><a href="timeline-editor.html">Timeline Editor</a></li>
+<li><a href="determinism-and-seeds.html">Determinism and Seeds</a></li>
+<li><a href="sample-guide-first-night.html">Sample Guide: First Night</a></li>
+<li><a href="api-summary.html">API Summary</a></li>
+<li><a href="honest-limits.html">Honest Limits</a></li>
+<li><a href="troubleshooting-and-support.html">Troubleshooting and Support</a></li>
+</ul>
+<h2>Support</h2>
+<p>Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>. When you write, include your Unity version, the wave set and seed involved, and the exact warning text &mdash; with a set and a seed, the cast you saw is the cast that can be reproduced.</p>
+  </main>
+</div>
+<footer class="site-footer">
+  WaveDirector Pro documentation &middot; ByteLura &middot; Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+</footer>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Timeline Editor - WaveDirector Pro Documentation - ByteLura</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="wordmark">WaveDirector <span class="accent">Pro</span></div>
+    <div class="header-meta">Documentation &middot; ByteLura</div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="sidebar" aria-label="Documentation">
+    <h2 class="nav-title">Documentation</h2>
+    <ul class="nav-list">
+<li><a href="index.html">Home</a></li>
+<li><a href="quick-start.html">Quick Start</a></li>
+<li><a href="installation-and-setup.html">Installation and Setup</a></li>
+<li><a href="authoring-model.html">Authoring Model</a></li>
+<li><a href="difficulty-budgets-and-composition.html">Difficulty Budgets and Composition</a></li>
+<li><a href="pacing-intermissions-and-boss-waves.html">Pacing, Intermissions and Boss Waves</a></li>
+<li><a href="spawn-sinks.html">Spawn Sinks</a></li>
+<li><a href="timeline-editor.html" class="active" aria-current="page">Timeline Editor</a></li>
+<li><a href="determinism-and-seeds.html">Determinism and Seeds</a></li>
+<li><a href="sample-guide-first-night.html">Sample Guide: First Night</a></li>
+<li><a href="api-summary.html">API Summary</a></li>
+<li><a href="honest-limits.html">Honest Limits</a></li>
+<li><a href="troubleshooting-and-support.html">Troubleshooting and Support</a></li>
+    </ul>
+    <div class="side-support">
+      <span class="side-support-label">Support</span>
+      <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+    </div>
+  </nav>
+  <main class="content">
+    <h1>The Timeline Editor</h1>
+<p class="source-note">Expanded from the product specification's window description and the shipped documentation.</p>
+<p>Open it from the home window (<em>Open in Wave Timeline</em>) or directly at <strong>Tools/ByteLura/WaveDirector Pro/Wave Timeline</strong>.</p>
+<figure class="doc-shot">
+  <img src="images/editor-timeline-edited.jpg" alt="The Wave Timeline editor with Wave 2, The Push, selected, showing its budget, spawn interval and alive cap fields and the Simulate All totals in the status line">
+  <figcaption>Editing a wave in the timeline: fields for the selected wave, with simulated totals below the strip.</figcaption>
+</figure>
+<h2>Layout</h2>
+<ol>
+<li><strong>Toolbar</strong> — a wave set field; a seed field (it edits the set's seed); <em>Add Wave</em>; and <em>Simulate All</em>, which composes every wave with the current seed and reports each queue's size and spend in the status line — the balance check you run before Play, not after.</li>
+<li><strong>Timeline strip</strong> — one block per wave, width proportional to the wave's timeline hint, intermissions shown as gaps. Boss waves carry a "Boss" tag. Blocks show the wave number, its kind, and its effective budget (after difficulty scaling). Clicking a block selects it; the strip scrolls horizontally rather than shrinking blocks below a legible minimum width.</li>
+<li><strong>Wave inspector</strong> — the selected wave's fields in plain language: Name, Kind, Composition (Budget or Explicit), Budget with the computed effective budget after difficulty shown beside it, spawn interval, max alive, max spawns, intermission after, the boss archetype for boss waves, and the entries list for Explicit mode.</li>
+<li><strong>Validation strip</strong> — validator warnings for the whole set, in wave order. Silent when the set is clean.</li>
+<li><strong>Footer totals</strong> — total timeline length, total effective budget across all waves, and roster size.</li>
+</ol>
+<h2>What the validator catches</h2>
+<p>Warnings are written in plain language: what happened, and the one action that fixes it. The validator flags, at authoring time:</p>
+<ul>
+<li>A wave whose budget buys nothing (the cheapest archetype costs more than the wave can spend).</li>
+<li>A boss wave with no boss archetype assigned.</li>
+<li>A roster entry no wave's effective budget can ever afford — a dead archetype that would never be cast.</li>
+</ul>
+<p>The numbers the window shows come from the same data pass the validator and the totals use — the window never computes a different answer from the model behind it.</p>
+<h2>The working loop</h2>
+<p>Select a wave, change a number, run <em>Simulate All</em>, read the new cast size and spend, then Play. The first-run version of that loop — raise wave 2's budget in the First Night set and watch a different army arrive — is the product's first success, and it is two clicks deep from the home window. With no set selected, the timeline shows a set field and the same two starting actions as the home window (<em>Create a Wave Set</em>, <em>Open the First Night Demo</em>) — never an empty grid.</p>
+  </main>
+</div>
+<footer class="site-footer">
+  WaveDirector Pro documentation &middot; ByteLura &middot; Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a>
+</footer>
+</body>
+</html>
